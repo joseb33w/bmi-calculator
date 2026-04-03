@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>BMI Calculator</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <i class="fas fa-heartbeat header-icon"></i>
+        <h1>BMI Calculator</h1>
+      </div>
+      <button id="historyToggle" class="header-btn" title="History">
+        <i class="fas fa-clock-rotate-left"></i>
+      </button>
+    </header>
+
+    <!-- Main Content -->
+    <main class="content" id="mainView">
+      <!-- Unit Toggle -->
+      <div class="unit-toggle">
+        <button class="unit-btn active" data-unit="imperial">Imperial</button>
+        <button class="unit-btn" data-unit="metric">Metric</button>
+        <div class="unit-slider"></div>
+      </div>
+
+      <!-- Gender Select -->
+      <div class="gender-row">
+        <button class="gender-btn active" data-gender="male">
+          <i class="fas fa-mars"></i>
+          <span>Male</span>
+        </button>
+        <button class="gender-btn" data-gender="female">
+          <i class="fas fa-venus"></i>
+          <span>Female</span>
+        </button>
+      </div>
+
+      <!-- Age -->
+      <div class="input-card">
+        <label class="input-label">Age</label>
+        <div class="stepper">
+          <button class="stepper-btn" data-target="age" data-dir="-1"><i class="fas fa-minus"></i></button>
+          <input type="number" id="age" value="25" min="2" max="120" class="stepper-value" />
+          <button class="stepper-btn" data-target="age" data-dir="1"><i class="fas fa-plus"></i></button>
+        </div>
+      </div>
+
+      <!-- Height -->
+      <div class="input-card" id="heightCard">
+        <label class="input-label">Height</label>
+        <!-- Imperial -->
+        <div class="height-imperial" id="heightImperial">
+          <div class="inline-inputs">
+            <div class="mini-input">
+              <input type="number" id="heightFt" value="5" min="1" max="8" />
+              <span class="unit-label">ft</span>
+            </div>
+            <div class="mini-input">
+              <input type="number" id="heightIn" value="9" min="0" max="11" />
+              <span class="unit-label">in</span>
+            </div>
+          </div>
+        </div>
+        <!-- Metric -->
+        <div class="height-metric hidden" id="heightMetric">
+          <div class="mini-input wide">
+            <input type="number" id="heightCm" value="175" min="50" max="250" />
+            <span class="unit-label">cm</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weight -->
+      <div class="input-card" id="weightCard">
+        <label class="input-label">Weight</label>
+        <div class="mini-input wide">
+          <input type="number" id="weightVal" value="160" min="20" max="700" step="0.1" />
+          <span class="unit-label" id="weightUnit">lbs</span>
+        </div>
+      </div>
+
+      <!-- Calculate Button -->
+      <button id="calcBtn" class="calc-btn">
+        <i class="fas fa-calculator"></i> Calculate BMI
+      </button>
+
+      <!-- Result Card -->
+      <div class="result-card hidden" id="resultCard">
+        <div class="result-top">
+          <div class="bmi-circle" id="bmiCircle">
+            <svg viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="52" class="track"></circle>
+              <circle cx="60" cy="60" r="52" class="progress" id="bmiArc"></circle>
+            </svg>
+            <div class="bmi-value" id="bmiValue">--</div>
+          </div>
+          <div class="result-info">
+            <div class="bmi-category" id="bmiCategory">--</div>
+            <div class="bmi-range" id="bmiRange"></div>
+          </div>
+        </div>
+
+        <!-- BMI Scale Bar -->
+        <div class="bmi-scale">
+          <div class="scale-bar">
+            <div class="scale-marker" id="scaleMarker"></div>
+          </div>
+          <div class="scale-labels">
+            <span>Under</span>
+            <span>Normal</span>
+            <span>Over</span>
+            <span>Obese</span>
+          </div>
+        </div>
+
+        <!-- Health Insight -->
+        <div class="insight-box" id="insightBox"></div>
+
+        <!-- Ideal Weight -->
+        <div class="ideal-box" id="idealBox"></div>
+
+        <!-- Save -->
+        <button class="save-btn" id="saveBtn">
+          <i class="fas fa-bookmark"></i> Save to History
+        </button>
+      </div>
+    </main>
+
+    <!-- History Panel -->
+    <div class="history-panel hidden" id="historyPanel">
+      <div class="history-header">
+        <h2><i class="fas fa-clock-rotate-left"></i> History</h2>
+        <button id="clearHistory" class="clear-btn">Clear All</button>
+      </div>
+      <div class="chart-container">
+        <canvas id="historyChart"></canvas>
+      </div>
+      <div class="history-list" id="historyList"></div>
+      <div class="empty-history hidden" id="emptyHistory">
+        <i class="fas fa-clipboard-list"></i>
+        <p>No saved entries yet.<br>Calculate your BMI and save it!</p>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
